@@ -19,17 +19,7 @@ The problem that this code is designed to solve is explained here: [Ticket-Drive
 
 ## Running tests
 
-```bash
-npm install       
-``` 
-Then either run
-```bash
-npm run test
-```
-or run instead:
-```bash
-npm run test:watch 
-```
+See the README.md of specific language directories.
 
 ## Contributing to this kata
 
