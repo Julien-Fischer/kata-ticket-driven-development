@@ -1,17 +1,32 @@
 import {describe, expect, it} from "vitest";
-import TicketPricingEngine from "../../src/pricing/ticket-pricing-engine";
+import TicketPricingEngine from "./ticket-pricing-engine";
 
 describe("TicketPricingEngine", () => {
     const engine = new TicketPricingEngine();
 
     describe("concert", () => {
 
-        it("applies weekend/holiday upcharge and basic discount rules", () => {
+        it("applies weekend upcharge and basic discount rules", () => {
             const total = engine.calculateTotal(
                 "concert",
                 2,
                 true,
                 false,
+                "regular",
+                false,
+                "",
+                "web"
+            );
+
+            expect(total).toBeCloseTo(124);
+        });
+
+        it("applies holiday upcharge and basic discount rules", () => {
+            const total = engine.calculateTotal(
+                "concert",
+                2,
+                false,
+                true,
                 "regular",
                 false,
                 "",
@@ -79,6 +94,36 @@ describe("TicketPricingEngine", () => {
             );
 
             expect(total).toBeCloseTo(156);
+        });
+
+        it("applies GROUP10 coupon on concerts", () => {
+            const total = engine.calculateTotal(
+                "concert",
+                10,
+                false,
+                false,
+                "regular",
+                false,
+                "GROUP10",
+                "web"
+            );
+
+            expect(total).toEqual(445);
+        });
+
+        it("does not apply GROUP10 coupon less than 10 tickets", () => {
+            const total = engine.calculateTotal(
+                "concert",
+                9,
+                false,
+                false,
+                "regular",
+                false,
+                "GROUP10",
+                "web"
+            );
+
+            expect(total).toEqual(468);
         });
     });
 
@@ -281,21 +326,37 @@ describe("TicketPricingEngine", () => {
             expect(total).toBeCloseTo(114.6);
         });
 
+
         it("applies WELCOME coupon (only for 1 or two tickets)", () => {
             const total = engine.calculateTotal(
+                "theater",
+                1,
+                false,
+                false,
+                "regular",
+                false,
+                "WELCOME",
+                "web"
+            );
+
+            expect(total).toBeCloseTo(54.3);
+
+            const total2 = engine.calculateTotal(
                 "theater",
                 2,
                 false,
                 false,
                 "regular",
                 false,
-                "GROUP10",
+                "WELCOME",
                 "web"
             );
 
-            expect(total).toBeCloseTo(120.6);
+            expect(total2).toBeCloseTo(108.6);
+        });
 
-            const total9 = engine.calculateTotal(
+        it("applies GROUP10 coupon (only for 10 or more tickets)", () => {
+            const total = engine.calculateTotal(
                 "theater",
                 9,
                 false,
@@ -306,7 +367,20 @@ describe("TicketPricingEngine", () => {
                 "web"
             );
 
-            expect(total9).toBeCloseTo(542.7);
+            expect(total).toBeCloseTo(542.7);
+
+            const total10 = engine.calculateTotal(
+                "theater",
+                10,
+                false,
+                false,
+                "regular",
+                false,
+                "GROUP10",
+                "web"
+            );
+
+            expect(total10).toBeCloseTo(513);
         });
 
         it("applies promo channel fee (phone/walk‑in)", () => {

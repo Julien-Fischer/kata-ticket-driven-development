@@ -171,7 +171,7 @@ export default class TicketPricingEngine {
         }
 
         if (couponCode === "GROUP10" && numberOfTickets >= 10) {
-            discount += 0.2;
+            discount += 0.15;
         }
         return discount;
     }
