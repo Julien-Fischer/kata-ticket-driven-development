@@ -10,7 +10,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.jupiter.version>5.10.3</junit.jupiter.version>
-        <assertj.version>3.27.1</assertj.version>
+        <assertj.version>4.0.0-M1</assertj.version>
         <maven.compiler.version>3.13.0</maven.compiler.version>
         <java.version>21</java.version>
     </properties>
